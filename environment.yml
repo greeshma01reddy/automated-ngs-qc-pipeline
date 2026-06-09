@@ -1,0 +1,19 @@
+name: bio-pipeline-env
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.9
+  - fastqc=0.12.1
+  - hisat2=2.2.1
+  - samtools=1.17
+  - subread=2.0.6
+  - multiqc=1.14
+  - r-base=4.2.3
+  - r-deseq2=1.38.0
+  - streamlit=1.31.0
+  - plotly=5.18.0
+  - bioconductor-deseq2=1.38.0
+
+
