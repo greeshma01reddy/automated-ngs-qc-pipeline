@@ -1,41 +1,31 @@
-# Automated NGS Quality Control Pipeline
+#  MultiOmics Automated RNASeq & Interactive Discovery Platform
 
-A production ready, highly reproducible bioinformatics pipeline built with **Nextflow (DSL2)** to automate quality control checks on Next Generation Sequencing (NGS) data.
+An end to end parallelized transcriptomics workflow framework that integrates high throughput sequencing secondary analysis, adaptive statistical differential expression testing, and downstream machine learning classification.
 
-##  Features
-* **Parallel Processing:** Efficiently scales to handle paired end sequencing reads simultaneously.
-* **Automated FastQC Analysis:** Generates individual sequence quality metrics and comprehensive HTML reports.
-* **Integrated MultiQC Dashboard:** Aggregates separate analysis logs into a single, interactive, summary report.
-* **Resumable Core Logic:** Leverages Nextflow's native caching mechanism to skip previously computed steps, drastically reducing compute overhead.
-* **Splice Aware Coordinate Alignment:** Integrates `HISAT2` to map high quality reads directly against an indexed reference genome.
-* **Efficient Output Compression:** Leverages `Samtools` to stream, sort, and index bulky alignment data into highly compressed binary `BAM` formats.
 ---
 
-## Pipeline Architecture
-The pipeline uses Nextflow channels to automatically stream paired end data through decoupled processing containers:
+##  System Architecture Overview
 
+The platform is designed in two primary analytical tracks to handle data execution and predictive insights independently:
 
+1. Track 1 (Backend Pipeline Orchestration): A scalable Nextflow (DSL2) pipeline that parallelizes high throughput quality control filtering (`FastQC`) and transcript expression map estimation.
+2. Track 2 (Downstream Statistical & ML Engine): An adaptive DESeq2 core in R that leverages gene wise dispersion estimations to robustly handle high variance inputs. Downstream data is fed into a **Random Forest Classifier** (`scikit-learn`) to predict and map RNA structural motif stability based on spatial configurations.
+3. Interactive Viewport: A full stack Streamlit dashboard delivering interactive visualization engines powered by Plotly.
 
-1. **Inputs:** Raw paired end `fastq.gz` files.
-2. **Process 1 (FASTQC):** Evaluates sequence quality scores, adapter contamination, and GC distribution across individual files.
-3. **Process 2 (MULTIQC):** Compiles standalone metrics into a single unified client deliverable (`multiqc_report.html`).
-4. **Process 3 (ALIGN):** Maps paired end reads to a reference genome, producing dynamic text alignment diagnostics (`.summary.txt`).
-5. **Process 4 (SAMTOOLS):** Converts text heavy SAM streams into a sorted, indexed binary configuration (`.sorted.bam` and `.sorted.bam.bai`) for downstream processing.
 ---
 
-## How to Run Locally
+##  Features Built & Deployed
 
-### Prerequisites
-Ensure your environment (WSL2, Linux, or HPC cluster) has the following dependencies installed:
-* **Java** (v11 or later)
-* **Nextflow**
-* **FastQC**
-* **MultiQC**
-* **HISAT2**
-* **Samtools** 
-### Execution
-Clone this repository, navigate to the folder, and run the pipeline using:
-```bash
-nextflow run main.nf
+###  Core Analytics & Statistical Resilience
+* Automated Asynchronous Parallelization: Leverages Nextflow channels to stream fastq inputs through parallel processing nodes.
+* Resilient Dispersion Modeling:The R backend dynamically overrides standard parametric curve fitting limits on high variance inputs using gene wise shrinkages to effortlessly process over 6,000 yeast genes.
+* Dynamic Volcano Visualizer: High density Plotly visualization coupled with real time sidebar sliders allowing users to dynamically manipulate $\log_2\text{Fold Change}$ and p value cutoffs.
+* Row Standardized Z-Score Heatmaps: Extracts the top 25 most statistically significant genetic features to render dynamic expression contrasts between control and treatment replicates.
 
-nextflow run main.nf -resume
+###  Predictive Machine Learning Integration
+* Structural Motif Classification: Employs a tuned Random Forest model to calculate Gini feature importance across key spatial variables (e.g., Free Energy $\Delta G$, GC Content, Stem/Loop length configurations).
+* On The Fly Cohort Exporter:A custom data streaming terminal allows researchers to filter expression matrices dynamically and export localized target gene cohorts directly as CSV files.
+
+---
+
+
