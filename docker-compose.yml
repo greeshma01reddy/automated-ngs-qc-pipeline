@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  bio_platform:
+    build: .
+    container_name: bio_pipeline_container
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/app
+    environment:
+      - STREAMLIT_SERVER_HEADLESS=true
+
